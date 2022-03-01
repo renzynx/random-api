@@ -12,10 +12,10 @@ import { buildSchema } from 'type-graphql';
 import { LyricResolver } from './resolvers/lyric.resolver';
 
 const bootstrap = async () => {
-	const app = fastify();
+	const app = fastify({ ignoreTrailingSlash: true, trustProxy: true });
 	app.register(autoRoutes, {
 		dir: path.join(srcDir, 'routes'),
-		logLevel: 'info'
+		logLevel: 'debug'
 	});
 	app.register(rateLimit, {
 		global: true,
