@@ -24,7 +24,7 @@ const bootstrap = async () => {
 	});
 
 	app.get('/', async () => {
-		return 'Documentation: https://renzynx.gitbook.io/api';
+		return 'Documentation: https://docs.renzynx.space';
 	});
 
 	const server = new ApolloServer({
