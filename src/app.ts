@@ -31,7 +31,7 @@ const bootstrap = async () => {
 		Status Page: <a href="https://status.renzynx.space">https://status.renzynx.space</a>
 		<br/>
 		<br/>
-		Graphql Playground: <a href="https://api.renzynx.space/graphql">https://graphql.renzynx.space/graphql</a>
+		Graphql Playground: <a href="https://api.renzynx.space/graphql">https://api.renzynx.space/graphql</a>
 		`);
 	});
 
