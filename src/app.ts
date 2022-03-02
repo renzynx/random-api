@@ -10,6 +10,7 @@ import { ApolloServerPluginDrainHttpServer, ApolloServerPluginLandingPageGraphQL
 import { fastifyAppClosePlugin } from './lib/functions';
 import { buildSchema } from 'type-graphql';
 import { LyricResolver } from './resolvers/lyric.resolver';
+import { RedditResolver } from './resolvers/reddit.resolver';
 
 const bootstrap = async () => {
 	const app = fastify({ ignoreTrailingSlash: true, trustProxy: true });
@@ -29,7 +30,8 @@ const bootstrap = async () => {
 
 	const server = new ApolloServer({
 		schema: await buildSchema({
-			resolvers: [LyricResolver]
+			resolvers: [LyricResolver, RedditResolver],
+			validate: false
 		}),
 		plugins: [
 			fastifyAppClosePlugin(app),

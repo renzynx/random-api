@@ -1,5 +1,47 @@
 import { Field, ObjectType } from 'type-graphql';
 
+@ObjectType()
+export class GraphqlRedditReturn {
+	@Field()
+	url!: string;
+
+	@Field()
+	image!: string;
+
+	@Field()
+	title!: string;
+
+	@Field()
+	upvotes!: number;
+
+	@Field()
+	downvotes!: number;
+
+	@Field()
+	created!: number;
+
+	@Field()
+	author!: string;
+
+	@Field()
+	subreddit!: string;
+
+	@Field()
+	comments!: number;
+
+	@Field()
+	thumbnail!: string;
+
+	@Field()
+	nsfw!: boolean;
+
+	@Field()
+	createdDate!: string;
+
+	@Field()
+	createdTime!: string;
+}
+
 export interface ILyricQuery {
 	q: string;
 	artist?: string;
