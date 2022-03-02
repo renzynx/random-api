@@ -28,7 +28,7 @@ const bootstrap = async () => {
 		return reply.type('text/html').send(`Documentation: <a href="https://docs.renzynx.space">https://docs.renzynx.space</a>
 		<br/>
 		<br/>
-		Status Page: <a href="https://status.renzynx.space">https://status.renzynx.space</a>
+		Status Page: <a href="https://status.renzynx.space/status">https://status.renzynx.space</a>
 		<br/>
 		<br/>
 		Graphql Playground: <a href="https://api.renzynx.space/graphql">https://api.renzynx.space/graphql</a>
