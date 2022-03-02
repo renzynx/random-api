@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import fastify from 'fastify';
+import fastify, { FastifyReply } from 'fastify';
 import autoRoutes from 'fastify-autoroutes';
 import rateLimit from 'fastify-rate-limit';
 import path from 'path';
@@ -24,8 +24,15 @@ const bootstrap = async () => {
 		timeWindow: 60 * 1000
 	});
 
-	app.get('/', async () => {
-		return 'Documentation: https://docs.renzynx.space\nStatus Page: https://status.renzynx.space/status\nGraphql Playground: https://api.renzynx.space/graphql';
+	app.get('/', async (_req, reply: FastifyReply) => {
+		return reply.type('text/html').send(`Documentation: <a href="https://docs.renzynx.space">https://docs.renzynx.space</a>
+		<br/>
+		<br/>
+		Status Page: <a href="https://status.renzynx.space">https://status.renzynx.space</a>
+		<br/>
+		<br/>
+		Graphql Playground: <a href="https://api.renzynx.space/graphql">https://graphql.renzynx.space/graphql</a>
+		`);
 	});
 
 	const server = new ApolloServer({
