@@ -8,11 +8,8 @@ import logger from '../lib/logger';
 @Resolver()
 export class RedditResolver {
 	@Query(() => [GraphqlRedditReturn])
-	async getReddit(
-		@Arg('query') query: string,
-		@Args(() => RedditOptions, { validate: true }) options: RedditOptions
-	): Promise<GraphqlRedditReturn[] | string> {
-		const { sort, span, nsfw, limit } = options;
+	async getReddit(@Args(() => RedditOptions, { validate: true }) options: RedditOptions): Promise<GraphqlRedditReturn[] | string> {
+		const { query, sort, span, nsfw, limit } = options;
 		try {
 			const res = await axios.get<IReddit>(
 				`https://www.reddit.com/r/${query}/${span ? 'top.json' : '.json'}?limit=${limit ? limit : '10'}${span ? `&t=${span}` : ''}`

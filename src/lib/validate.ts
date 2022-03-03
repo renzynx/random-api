@@ -4,6 +4,9 @@ import { SORT_TYPE, SPAN_TYPE } from './constants';
 
 @ArgsType()
 export class RedditOptions {
+	@Field()
+	query!: string;
+
 	@Field(() => SPAN_TYPE, { nullable: true })
 	span!: SPAN_TYPE;
 
