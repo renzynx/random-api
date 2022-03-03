@@ -1,20 +1,18 @@
-import axios from 'axios';
 import { Arg, Args, Query, Resolver } from 'type-graphql';
-import logger from '../lib/logger';
+import { SORT_TYPE } from '../lib/constants';
 import { GraphqlRedditReturn, IRandomRedditData, IReddit, RedditReturn } from '../lib/types';
 import { RedditOptions } from '../lib/validate';
+import axios from 'axios';
+import logger from '../lib/logger';
 
 @Resolver()
 export class RedditResolver {
 	@Query(() => [GraphqlRedditReturn])
-	async getReddit(@Arg('query') query: string, @Args(() => RedditOptions) options: RedditOptions): Promise<GraphqlRedditReturn[] | string> {
+	async getReddit(
+		@Arg('query') query: string,
+		@Args(() => RedditOptions, { validate: true }) options: RedditOptions
+	): Promise<GraphqlRedditReturn[] | string> {
 		const { sort, span, nsfw, limit } = options;
-
-		if (sort && !['comments', 'upvotes', 'old', 'new'].includes(sort))
-			throw new Error('Invalid sort option, valid options are: comments, upvotes, old, new');
-		if (span && !['hour', 'day', 'week', 'month', 'year', 'all'].includes(span))
-			throw new Error('Invalid span option, valid options are: hour, day, week, month, year, all');
-
 		try {
 			const res = await axios.get<IReddit>(
 				`https://www.reddit.com/r/${query}/${span ? 'top.json' : '.json'}?limit=${limit ? limit : '10'}${span ? `&t=${span}` : ''}`
@@ -56,13 +54,13 @@ export class RedditResolver {
 				});
 			}
 
-			if (sort === 'comments') {
+			if (sort === SORT_TYPE.comments) {
 				posts.sort((a, b) => b.comments - a.comments);
-			} else if (sort === 'upvotes') {
+			} else if (sort === SORT_TYPE.upvotes) {
 				posts.sort((a, b) => b.upvotes - a.upvotes);
-			} else if (sort === 'old') {
+			} else if (sort === SORT_TYPE.old) {
 				posts.sort((a, b) => b.created - a.created);
-			} else if (sort === 'new') {
+			} else if (sort === SORT_TYPE.new) {
 				posts.sort((a, b) => a.created - b.created);
 			}
 
@@ -111,8 +109,10 @@ export class RedditResolver {
 				createdTime
 			};
 		} catch (error: any) {
+			if ((error.response && error.response.status === 404) || error.message === "Cannot read properties of undefined (reading 'children')")
+				throw new Error('Subreddit not found');
 			logger.error(`[getRandomReddit] error: ${error.message}`);
-			return null;
+			throw new Error('Internal server error');
 		}
 	}
 }

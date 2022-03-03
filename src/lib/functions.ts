@@ -41,15 +41,14 @@ const fallBack = async (query: string, artist?: string): Promise<string | null> 
 			`https://search.azlyrics.com/search.php?q=${query.split(' ').join('+')} ${artist ? artist.split(' ').join('+') : ''}`
 		);
 		const $ = cheerio.load(res.data);
-		const link = $('body > div.container.main-page > div > div > div:nth-child(1) > table > tbody > tr:nth-child(1) > td > a');
-		const lyricUrl = link.attr('href');
-		if (!lyricUrl) return null;
-		const lyricRes = await axios.get(lyricUrl);
+		const url = $('body > div.container.main-page > div > div > div:nth-child(1) > table > tbody > tr:nth-child(1) > td > a').attr('href');
+		if (!url) return null;
+		const lyricRes = await axios.get(url);
 		const $lyric = cheerio.load(lyricRes.data);
 		const lyric = $lyric('body > div.container.main-page > div > div.col-xs-12.col-lg-8.text-center > div:nth-child(8)').text();
 		return lyric;
 	} catch (error: any) {
-		logger.error(`[firstFallBack] error: ${error.message}`);
+		logger.error(`[fallback] error: ${error.message}`);
 		return null;
 	}
 };

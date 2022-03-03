@@ -1,13 +1,13 @@
-import 'reflect-metadata';
+import './lib/setup';
 import fastify, { FastifyReply } from 'fastify';
 import autoRoutes from 'fastify-autoroutes';
 import rateLimit from 'fastify-rate-limit';
 import path from 'path';
 import logger from './lib/logger';
 import { srcDir, PORT } from './lib/constants';
+import { fastifyAppClosePlugin } from './lib/functions';
 import { ApolloServer } from 'apollo-server-fastify';
 import { ApolloServerPluginDrainHttpServer, ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
-import { fastifyAppClosePlugin } from './lib/functions';
 import { buildSchema } from 'type-graphql';
 import { LyricResolver } from './resolvers/lyric.resolver';
 import { RedditResolver } from './resolvers/reddit.resolver';
@@ -25,7 +25,8 @@ const bootstrap = async () => {
 	});
 
 	app.get('/', async (_req, reply: FastifyReply) => {
-		return reply.type('text/html').send(`Documentation: <a href="https://docs.renzynx.space">https://docs.renzynx.space</a>
+		return reply.type('text/html').send(`
+		Documentation: <a href="https://docs.renzynx.space">https://docs.renzynx.space</a>
 		<br/>
 		<br/>
 		Status Page: <a href="https://status.renzynx.space/status">https://status.renzynx.space</a>
@@ -55,7 +56,7 @@ const bootstrap = async () => {
 			logger.error(`[app] error starting server: ${err.message}`);
 			process.exit(1);
 		}
-		logger.info(`[app] server listening on ${address}`);
+		logger.success(`[app] server listening on ${address}`);
 	});
 };
 
